@@ -1,0 +1,39 @@
+buildscript {
+  repositories {
+    maven {
+		url artifactory_URL +'/public'
+	}
+  }
+  dependencies {
+    classpath "org.springframework.boot:spring-boot-gradle-plugin:2.2.6.RELEASE"
+  }
+}
+plugins {
+	id 'org.springframework.boot' version '2.2.6.RELEASE'
+	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+	id 'java'
+}
+
+group = 'fr.sma.sy'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+repositories {
+	maven { 
+        url artifactory_URL +'/public'
+		allowInsecureProtocol true
+	}
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	testImplementation('org.springframework.boot:spring-boot-starter-test') {
+		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+	}
+}
+
+test {
+	useJUnitPlatform()
+}
+apply plugin: "org.springframework.boot"

@@ -1,0 +1,14 @@
+pluginManagement {
+    repositories {
+        maven {
+            url artifactory_URL +'/public'
+            credentials {
+                username = artifactory_USER
+                password = artifactory_PASSWORD
+            }
+            allowInsecureProtocol true
+        }
+    }
+}
+
+rootProject.name = 'sy'
