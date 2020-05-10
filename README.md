@@ -55,3 +55,64 @@ apply plugin: "org.springframework.boot"
     1 gradle build
     2 gradlew bootRun
 ```
+
+## Fichiers de propriétés et profile
+
+```
+   java -jar myMicroService.jar 
+   -Dspring.profiles.active=dev // VM Options
+   --spring.config.location=classpath:/tech.properties,classpath:/application-dev.yml // Programs Arguments
+```
+
+## Configuration d'une base de données embarquée H2 pour développement
+
+* Créer dans le répertoire src/main/resources
+
+    - un script schema-h2.sql pour créer la structure des tables
+    - un script data-h2.sql pour insérer les données dans les tables
+
+## Configuration de MyBatis 
+
+* Dépendance Gradle dans le fichier build.gradle
+```
+   dependencies {
+     implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.1.2'
+   }
+```
+Pour utiliser MyBatis avec Spring, on a besoin d'un SqlSessionFactory et au moins d'une interface mapper
+Le starter MtBatis pour Spring Boot va : 
+
+* auto-détecter une datasource existante
+* créer and enregistrer une instance d'un SqlSessionFactory en passant la DataSource en entrée en utilisant le SqlSessionFactoryBean
+* créer et enregistrer une instance de SqlSessionTemplate
+* autoscanner les mappers et les lier au SqlSessionTemplate puis les associer au context Spring pour pouvoir les injecter
+    
+    ```
+    /* DATASOURCE */
+    @Bean(name = "DataSource")
+    @ConfigurationProperties(prefix = "spring.datasource")
+    public DataSource DataSource() {
+        return DataSourceBuilder.create().build();
+    }
+    
+    /*  SessionFactory */
+     @Bean(name = "SessionFactory")
+     public SqlSessionFactory SessionFactory(@Qualifier("DataSource") DataSource dataSource) throws Exception {
+        SqlSessionFactoryBean bean = new SqlSessionFactoryBean();
+        bean.setDataSource(dataSource);
+        return bean.getObject();
+     }
+     
+     /*  DataSourceTransactionManager */
+      @Bean(name = "TransactionManager")
+      public DataSourceTransactionManager TransactionManager(@Qualifier("DataSource") DataSource dataSource) {
+        return new DataSourceTransactionManager(dataSource);
+      }
+      
+      /* SqlSessionTemplate  */
+      @Bean(name = "SessionTemplate")
+      public SqlSessionTemplate SessionTemplate(@Qualifier("SessionFactory") SqlSessionFactory sqlSessionFactory) throws Exception {
+        return new SqlSessionTemplate(sqlSessionFactory);
+      }
+    
+    ```

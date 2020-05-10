@@ -14,21 +14,29 @@ plugins {
 	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
 	id 'java'
 }
+ext.javaVer =  project.hasProperty('javaVer') ? project.getProperty('javaVer') : '1.8'
 
 group = 'fr.sma.sy'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '1.8'
+
+sourceCompatibility = javaVer
+targetCompatibility = javaVer
 
 repositories {
 	maven { 
         url artifactory_URL +'/public'
 		allowInsecureProtocol true
+
 	}
 
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-data-rest'
+	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.1.2'
+	runtimeOnly 'com.h2database:h2'
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
