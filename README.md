@@ -52,7 +52,7 @@ apply plugin: "org.springframework.boot"
 ## Installation Projet
 
 ```
-    1 gradle build
+    1 gradle build ou gradle build -x test (skip tests)
     2 gradlew bootRun
 ```
 
@@ -116,3 +116,7 @@ Le starter MtBatis pour Spring Boot va :
       }
     
     ```
+    
+ ## Gradle et les tests : 
+    
+ Documentation : https://docs.gradle.org/current/dsl/org.gradle.api.tasks.testing.Test.html

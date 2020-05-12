@@ -1,8 +1,6 @@
 buildscript {
   repositories {
-    maven {
-		url artifactory_URL +'/public'
-    }
+  mavenCentral()
   }
   dependencies {
     classpath "org.springframework.boot:spring-boot-gradle-plugin:2.2.6.RELEASE"
@@ -23,12 +21,7 @@ sourceCompatibility = javaVer
 targetCompatibility = javaVer
 
 repositories {
-	maven { 
-        url artifactory_URL +'/public'
-		allowInsecureProtocol true
-
-	}
-
+	mavenCentral()
 }
 
 dependencies {
@@ -37,6 +30,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-rest'
 	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.1.2'
 	runtimeOnly 'com.h2database:h2'
+	testImplementation 'junit:junit:4.13'
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
@@ -44,5 +38,19 @@ dependencies {
 
 test {
 	useJUnitPlatform()
+	useJUnit()
+	testLogging.showStandardStreams = true
+	minHeapSize = "128m"
+	maxHeapSize = "512m"
+	jvmArgs '-XX:MaxPermSize=256m'
+	beforeTest { descriptor ->
+		// logger.lifecycle("Running test: " + descriptor)
+	}
+	failFast = true
+	onOutput { descriptor, event ->
+		// logger.lifecycle("Test: " + descriptor + " produced standard out/err: " + event.message )
+	}
+
+
 }
 apply plugin: "org.springframework.boot"
