@@ -1,1 +1,13 @@
+pluginManagement {
+    repositories {
+        maven {
+            url ''
+            credentials {
+                username = ''
+                password = ''
+            }
+
+        }
+    }
+}
 rootProject.name = 'sy'

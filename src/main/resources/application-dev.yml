@@ -19,5 +19,8 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: none
-
-
+logging:
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+  level:
+    fr.sma.sy.tests: TRACE

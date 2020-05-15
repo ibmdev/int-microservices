@@ -20,6 +20,6 @@ public class DataInitializer implements ApplicationRunner {
 
     public void run(ApplicationArguments applicationArguments) throws Exception {
         List<User> users = userDao.getListUsers();
-        System.out.println("Initialisation des données au démarrage de l'application : "+ users.size());
+        System.out.println("Initialisation de la base de données au démarrage de l'application : "+ users.size());
     }
 }
